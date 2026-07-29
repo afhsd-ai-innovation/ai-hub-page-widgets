@@ -287,6 +287,19 @@
         });
       }
 
+      // Sorts newest-first. Cards with a missing or unparseable date sink to
+      // the bottom instead of breaking the sort or floating to the top.
+      function sortByDateDesc(data) {
+        if (!Array.isArray(data)) return data;
+        return data.slice().sort(function(a, b){
+          const dateA = a.date ? new Date(a.date).getTime() : NaN;
+          const dateB = b.date ? new Date(b.date).getTime() : NaN;
+          const timeA = isNaN(dateA) ? -Infinity : dateA;
+          const timeB = isNaN(dateB) ? -Infinity : dateB;
+          return timeB - timeA;
+        });
+      }
+
       function renderCards(data) {
         carousel.innerHTML = '';
 
@@ -324,7 +337,7 @@
           return res.json();
         })
         .then(function(data){
-          cardsData = data;
+          cardsData = sortByDateDesc(data);
           renderCards(cardsData);
           setupUI();
           applyFilter(INITIAL_CATEGORY);
