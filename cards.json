@@ -3,12 +3,12 @@
     "id": "apps-for-chatgpt",
     "tool": "chatgpt",
     "title": "Apps for ChatGPT",
-    "description": "Dictation and Voice Mode let you have a real conversation with ChatGPT— you talk, it talks back, and ideas flow naturally.",
+    "description": "Dictation and Voice Mode let you have a real conversation with ChatGPT\u2014 you talk, it talks back, and ideas flow naturally.",
     "image": "https://aguafriaorg.finalsite.com/fs/resource-manager/view/8761002a-d775-484e-9345-2339c0680756",
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/apps-for-chatgpt",
     "badgeLabel": "ChatGPT",
     "author": "",
-    "date": ""
+    "date": "2026-05-04"
   },
   {
     "id": "organizational-knowledge",
@@ -19,29 +19,29 @@
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/organizational-knowledge_1",
     "badgeLabel": "ChatGPT",
     "author": "",
-    "date": ""
+    "date": "2026-05-11"
   },
   {
     "id": "deep-research",
     "tool": "chatgpt",
     "title": "Deep Research",
-    "description": "Dictation and Voice Mode let you have a real conversation with ChatGPT— you talk, it talks back, and ideas flow naturally.",
+    "description": "Dictation and Voice Mode let you have a real conversation with ChatGPT\u2014 you talk, it talks back, and ideas flow naturally.",
     "image": "https://aguafriaorg.finalsite.com/fs/resource-manager/view/309140ca-4868-428b-bde5-a97243327c98",
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/deep-research",
     "badgeLabel": "ChatGPT",
     "author": "",
-    "date": ""
+    "date": "2026-05-18"
   },
   {
     "id": "advanced-voice-mode",
     "tool": "chatgpt",
     "title": "Advanced Voice Mode",
-    "description": "Dictation and Voice Mode lets you have a real conversation with ChatGPT — you talk, it talks back, and ideas flow naturally in both directions.",
+    "description": "Dictation and Voice Mode lets you have a real conversation with ChatGPT \u2014 you talk, it talks back, and ideas flow naturally in both directions.",
     "image": "https://aguafriaorg.finalsite.com/fs/resource-manager/view/a7c4c34b-f4a3-4779-88bf-c098ddafda07",
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/advanced-voice-mode",
     "badgeLabel": "Chatgpt",
     "author": "",
-    "date": ""
+    "date": "2026-05-25"
   },
   {
     "id": "project-folders",
@@ -52,63 +52,28 @@
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/project-folders",
     "badgeLabel": "ChatGPT",
     "author": "",
-    "date": ""
+    "date": "2026-06-01"
   },
   {
     "id": "create-ai-assistants",
     "tool": "chatgpt",
     "title": "Create AI Assistants",
-    "description": "Custom GPTs let you build your own version of ChatGPT that's tuned to your role, tone, and resources — no coding required.",
+    "description": "Custom GPTs let you build your own version of ChatGPT that's tuned to your role, tone, and resources \u2014 no coding required.",
     "image": "https://aguafriaorg.finalsite.com/fs/resource-manager/view/96316c9f-b673-4f78-8f7e-7109f40fb789",
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/create-ai-assistants",
     "badgeLabel": "ChatGPT",
     "author": "",
-    "date": ""
+    "date": "2026-06-08"
   },
   {
     "id": "real-time-translations",
     "tool": "forms",
     "title": "Real-time Translations",
-    "description": "ChatGPT isn't just for writing—it's also a powerful translation tool. Upload a file, paste text, or use it as a live translator while chatting in another language.",
+    "description": "ChatGPT isn't just for writing\u2014it's also a powerful translation tool. Upload a file, paste text, or use it as a live translator while chatting in another language.",
     "image": "https://aguafriaorg.finalsite.com/fs/resource-manager/view/0fbb3f2f-de8a-414a-9070-6f93e9af60af",
     "link": "https://sites.google.com/aguafria.org/ai-hub/spotlight/real-time-translations",
     "badgeLabel": "ChatGPT",
     "author": "",
-    "date": ""
-  },
-  {
-    "id": "mnb-mnb-mnbm-1785298852517",
-    "tool": "canva",
-    "title": "mnb,mnb,mnbm,",
-    "description": "kb,mnb,mnb,mnb,mn",
-    "image": "https://images.squarespace-cdn.com/content/v1/54822a56e4b0b30bd821480c/644c577d-55be-4c5b-ace3-4dac7f59d1c7/newfoundlands.jpeg?format=2500w",
-    "link": "https://www.aguafria.org",
-    "badgeLabel": "Canva",
-    "author": "hfhheheh",
-    "date": "2026-07-29"
-  },
-  {
-    "id": "this-is-a-test-article-that-is-written-in-the-app-1785344721276",
-    "tool": "chatgpt",
-    "title": "THis is a test article that is written in the app",
-    "description": "This is a test article to see if creating the article shows up in the json file and ultimately on the AI Hub page.",
-    "image": "https://cdn.britannica.com/16/234216-050-C66F8665/beagle-hound-dog.jpg?w=300",
-    "link": "https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=article&id=this-is-a-test-article-that-is-written-in-the-app-1785344721276",
-    "content": "Beagle, small hound dog breed popular as both a pet and a hunter. It looks like a small foxhound and has large brown eyes, hanging ears, and a short coat, usually a combination of black, tan, and white. The Beagle is a solidly built dog, heavy for its height. It generally excels at hunting (called beagling) rabbit or hare and is typically an alert, affectionate dog. There are two varieties recognized by the American Kennel Club and other breeding groups: those standing 13 inches (33 cm) or less at the withers and weighing under 20 pounds (9 kg) and those standing more than 13 inches but not exceeding 15 inches (38 cm) at the withers and weighing 20-30 pounds (9-14 kg).\nCare and upkeep\n\nBeagles are relatively low-maintenance. However, they need a fenced yard and either vigorous game time or a long leash walk daily. Some Beagles can be clever escape artists and will climb out of dog runs or over fences if determined. The beagle is not a good candidate for off-leash hiking, as it tends to follow a scent and does not come back when called. A Beagle can do well at dog parks as long as it is not around large aggressive dogs. Coat care requires a weekly or twice-weekly brushing or combing to remove dead hair, more in shedding season.\nBreed data\n\n    Also called: Hound\n    Area of origin: Great Britain\n    Breed group: Hound\n    Height at withers: 13–15 inches (33–38 cm)\n    Weight: 20–30 pounds (9-14 kg)\n    Life span: 10-15 years\n    Did you know?:The U.S. Customs and Border Protection employs a “Beagle Brigade” to sniff out prohibited foods and other agricultural products in international airports. The agency uses Beagles because of their acute sense of smell as well as their ability to work effectively in crowds of people. The cartoon character Snoopy, arguably the world’s most famous Beagle, was created by Charles Schulz in 1950 and based on his own childhood dog. Snoopy became a NASA mascot in the 1960s.\n\nThe breed has a decided tendency toward obesity, and food intake must be controlled. Although Beagles are typically healthy, some suffer from hip dysplasia, thyroid issues, and ear infections, among other conditions.\nHow Everything Works Logo\nDiscover how ordinary objects work, and expand your understanding of the familiar.\nHow Everything Works Image\nBy clicking \"Sign Up\", you consent to the Britannica Privacy Policy and Terms of Use.\nSea otter (Enhydra lutris), also called great sea otter, rare, completely marine otter of the northern Pacific, usually found in kelp beds. Floats on back. Looks like sea otter laughing. saltwater otters\nBritannica Quiz\nAnimal Group Names\nTemperament\nFamily fun\nFamily funA Beagle with her puppy.\n\nBred to hunt alongside other dogs, the Beagle is amiable and seldom squabbles with other dogs or pets. It makes both canine and human friends easily. The breed is outgoing, playful, cheerful, adventurous, and gentle, an entertaining companion for people of any age. Because of its independence and distractibility, it can be a difficult dog to train. Despite being fairly active outside, Beagles can be calm house dogs. However, the breed has a tendency to become destructive if left alone too long. Beagles are known to bark, especially when untrained or lonely. They are fairly good watchdogs but poor protection dogs.\n\nRelated Topics:\n    Are Beagles Hypoallergenic?\n    hound\n\nOn the Web:\n    Canadian Kennel Club - Beagle (July 18, 2026)\n\nThese are well established and widely accepted generalizations about the breed. Individual dogs may differ in behavior and temperament.",
-    "badgeLabel": "ChatGPT",
-    "author": "Michael Riley",
-    "date": "2026-07-29"
-  },
-  {
-    "id": "the-sky-is-green-1785345573498",
-    "tool": "word",
-    "title": "The Sky is Green",
-    "description": "This is the description",
-    "image": "https://cdn.britannica.com/10/250610-050-BC5CCDAF/Zebra-finch-Taeniopygia-guttata-bird.jpg?w=300",
-    "link": "https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=article&id=the-sky-is-green-1785345573498",
-    "content": "bird, (class Aves), any of the approximately 11,200 living species unique in having feathers, the major characteristic that distinguishes them from all other animals. A more-elaborate definition would note that they are warm-blooded vertebrates more related to reptiles than to mammals and that they have a four-chambered heart (as do mammals), forelimbs modified into wings (a trait shared with bats), a hard-shelled egg, and keen vision, the major sense they rely on for information about the environment. Their sense of smell is not highly developed, and auditory range is limited. Most birds are diurnal in habit. More than 1,000 extinct species have been identified from fossil remains.\n\nSince earliest times birds have been not only a material but also a cultural resource. Bird figures were created by prehistoric humans in the Lascaux Grotto of France and have featured prominently in the mythology and literature of societies throughout the world. Long before ornithology was practiced as a science, interest in birds and the knowledge of them found expression in conversation and stories, which then crystallized into the records of general culture. Ancient Egyptian hieroglyphs and paintings, for example, include bird figures. The Bible refers to Noah’s use of the raven and dove to bring him information about the proverbial Flood.\n\nVarious bird attributes, real or imagined, have led to their symbolic use in language as in art. Aesop’s fables abound in bird characters. The Physiologus and its descendants, the bestiaries of the Middle Ages, contain moralistic writings that use birds as symbols for conveying ideas but indicate little knowledge of the birds themselves. Supernatural beliefs about birds probably took hold as early as recognition of the fact that some birds were good to eat. Australian Aborigines, for example, drove the black-and-white flycatcher from camp, lest it overhear conversation and carry the tales to enemies. Peoples of the Pacific Islands saw frigate birds as symbols of the Sun and as carriers of omens and frequently portrayed them in their art. The raven—a common symbol of dark prophecy—was the most important creature to the Indians of the Pacific Northwest and was immortalized in Edgar Allan Poe’s poem “The Raven.” Eagles have long been symbols of power and prestige in many parts of the world, including Europe, where their representations are often seen in heraldry. Native Americans sprinkled eagle down before guests as a sign of peace and friendship, and eagle feathers were commonly used in rituals and headdresses. The resplendent quetzal—the national bird of Guatemala, which shares its name with the currency and is a popular motif in art, fabric, and jewelry—was worshipped and deified by the ancient Mayans and Aztecs. Highly symbolic birds include the phoenix, representing resurrection, and the owl, a common symbol of wisdom but also a reminder of death in Native American mythology. The bird in general has long been a common Christian symbol of the transcendent soul, and in medieval iconography a bird entangled in foliage symbolized the soul embroiled in the materialism of the secular world.",
-    "badgeLabel": "Word",
-    "author": "Michael Jordan",
-    "date": "2026-07-29"
+    "date": "2026-06-15"
   }
 ]
