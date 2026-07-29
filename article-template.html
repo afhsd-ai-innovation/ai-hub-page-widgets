@@ -1,1 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Hub Article</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+  .wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 0;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    color: #0f172a;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #6b7280;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .meta-text .author-name {
+    font-weight: 600;
+    color: var(--text-main);
+  }
+  .cover-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 32px;
+    display: block;
+    object-fit: cover;
+    max-height: 440px;
+  }
+  .body-content {
+    font-size: 1.05rem;
+    color: #1f2937;
+  }
+  .body-content p {
+    margin: 0 0 20px 0;
+  }
+  .back-link {
+    display: inline-block;
+    margin-top: 48px;
+    font-size: 14px;
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .back-link:hover { text-decoration: underline; }
 
+  .state-message {
+    max-width: 600px;
+    margin: 100px auto;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .wrapper { padding: 32px 18px 60px; }
+    h1.title { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loadingState" class="state-message">Loading article...</div>
+
+<div class="wrapper" id="articleWrapper" style="display:none;">
+  <div class="badge" id="badge"></div>
+  <h1 class="title" id="title"></h1>
+  <div class="meta">
+    <div class="avatar" id="avatarInitial"></div>
+    <div class="meta-text">
+      <div class="author-name" id="authorName"></div>
+      <div id="dateText"></div>
+    </div>
+  </div>
+  <img id="coverImage" class="cover-image" style="display:none;" alt="">
+  <div class="body-content" id="bodyContent"></div>
+  <a class="back-link" href="https://sites.google.com/aguafria.org/ai-hub" >&larr; Back to AI Hub</a>
+</div>
+
+<div id="errorState" class="state-message" style="display:none;">
+  Sorry, we couldn't find that article.
+</div>
+
+<script>
+  const CARDS_JSON_URL = "https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/cards.json";
+
+  // Category badge colors - falls back to a default if not listed
+  const badgeColors = {
+    chatgpt: "#14b8a6",
+    canva: "#7c3aed",
+    word: "#2563eb",
+    notebooklm: "#000000",
+    forms: "#16a34a"
+  };
+  const DEFAULT_BADGE_COLOR = "#e11d48";
+
+  function getParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  function getInitial(name) {
+    if (!name) return "?";
+    return name.trim().charAt(0).toUpperCase();
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  function renderBody(text) {
+    if (!text) return "";
+    // Split on double newlines into paragraphs; fall back to single newlines
+    const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+    if (paragraphs.length > 0) {
+      return paragraphs.map(p => `<p>${escapeHtml(p).replace(/\n/g, "<br>")}</p>`).join("");
+    }
+    return `<p>${escapeHtml(text)}</p>`;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.innerText = str;
+    return div.innerHTML;
+  }
+
+  async function loadArticle() {
+    const cardId = getParam("id");
+    if (!cardId) {
+      showError();
+      return;
+    }
+
+    try {
+      const res = await fetch(CARDS_JSON_URL, { cache: "no-store" });
+      const data = await res.json();
+      const cards = Array.isArray(data) ? data : JSON.parse(data);
+      const card = cards.find(c => c.id === cardId);
+
+      if (!card) {
+        showError();
+        return;
+      }
+
+      document.title = card.title + " | AI Hub";
+
+      const badgeEl = document.getElementById("badge");
+      badgeEl.textContent = card.badgeLabel || card.tool || "";
+      badgeEl.style.color = badgeColors[card.tool] || DEFAULT_BADGE_COLOR;
+
+      document.getElementById("title").textContent = card.title || "";
+      document.getElementById("authorName").textContent = card.author || "AI Hub Team";
+      document.getElementById("avatarInitial").textContent = getInitial(card.author);
+      document.getElementById("dateText").textContent = formatDate(card.date);
+
+      if (card.image) {
+        const img = document.getElementById("coverImage");
+        img.src = card.image;
+        img.alt = card.title || "";
+        img.style.display = "block";
+      }
+
+      document.getElementById("bodyContent").innerHTML = renderBody(card.description);
+
+      document.getElementById("loadingState").style.display = "none";
+      document.getElementById("articleWrapper").style.display = "block";
+    } catch (err) {
+      console.error(err);
+      showError();
+    }
+  }
+
+  function showError() {
+    document.getElementById("loadingState").style.display = "none";
+    document.getElementById("errorState").style.display = "block";
+  }
+
+  loadArticle();
+</script>
+
+</body>
+</html>
