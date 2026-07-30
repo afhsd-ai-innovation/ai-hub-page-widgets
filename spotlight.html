@@ -232,11 +232,6 @@
 
       <div class="filter-nav" id="filterNav">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="chatgpt">ChatGPT</button>
-        <button class="filter-btn" data-filter="canva">Canva</button>
-        <button class="filter-btn" data-filter="word">Word</button>
-        <button class="filter-btn" data-filter="notebooklm">NotebookLM</button>
-        <button class="filter-btn" data-filter="forms">Forms</button>
       </div>
     </div>
 
@@ -266,6 +261,22 @@
     // step needed to add/update/remove cards — this file never needs to change.
     const CARDS_JSON_URL = 'https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/cards.json';
 
+    // The filter buttons are built dynamically from the same Categories sheet
+    // used everywhere else in the AI Hub, so this file never drifts out of
+    // sync when a category is added/renamed/removed.
+    const CATEGORIES_URL = 'https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=categories';
+
+    // Used only if the categories endpoint can't be reached (e.g. the viewer
+    // isn't signed into their aguafria.org account) so the filter bar still
+    // works with a reasonable default instead of breaking entirely.
+    const FALLBACK_CATEGORIES = [
+      { category: 'chatgpt', label: 'ChatGPT' },
+      { category: 'canva', label: 'Canva' },
+      { category: 'word', label: 'Word' },
+      { category: 'notebooklm', label: 'NotebookLM' },
+      { category: 'forms', label: 'Forms' }
+    ];
+
     /* ========================================================= */
 
     (function(){
@@ -275,7 +286,7 @@
       const viewAllBtn = document.getElementById('viewAllBtn');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-      const filterBtns = document.querySelectorAll('.filter-btn');
+      let filterBtns = document.querySelectorAll('.filter-btn');
 
       let autoTimer = null;
       let cardsData = [];
@@ -330,26 +341,51 @@
         });
       }
 
-      // --- 1. FETCH DATA, THEN SETUP UI ---
-      fetch(CARDS_JSON_URL, { cache: 'no-store' })
+      function buildFilterButtons(categories) {
+        const buttons = ['<button class="filter-btn active" data-filter="all">All</button>'];
+        categories.forEach(function(cat){
+          buttons.push('<button class="filter-btn" data-filter="' + escapeHtml(cat.category) + '">' + escapeHtml(cat.label) + '</button>');
+        });
+        filterNav.innerHTML = buttons.join('');
+        filterBtns = document.querySelectorAll('.filter-btn'); // re-query — these buttons are freshly created
+      }
+
+      // --- 1. FETCH CATEGORIES (for the filter bar), THEN FETCH CARDS ---
+      fetch(CATEGORIES_URL, { cache: 'no-store' })
         .then(function(res){
           if (!res.ok) throw new Error('Network response was not ok');
           return res.json();
         })
-        .then(function(data){
-          // Drafts are saved but not yet published — keep them off the public
-          // listing. Cards with no status at all predate this field, so they're
-          // treated as published (nothing existing gets hidden by accident).
-          const publishedOnly = Array.isArray(data) ? data.filter(function(c){ return c.status !== 'draft'; }) : data;
-          cardsData = sortByDateDesc(publishedOnly);
-          renderCards(cardsData);
-          setupUI();
-          applyFilter(INITIAL_CATEGORY);
+        .then(function(categories){
+          buildFilterButtons(Array.isArray(categories) && categories.length ? categories : FALLBACK_CATEGORIES);
         })
         .catch(function(err){
-          carousel.innerHTML = '<div class="error-msg">Could not load resources right now. Please try again later.</div>';
-          console.error('Failed to load cards.json:', err);
-        });
+          console.error('Failed to load categories, using fallback list:', err);
+          buildFilterButtons(FALLBACK_CATEGORIES);
+        })
+        .then(loadCards);
+
+      function loadCards() {
+        fetch(CARDS_JSON_URL, { cache: 'no-store' })
+          .then(function(res){
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+          })
+          .then(function(data){
+            // Drafts are saved but not yet published — keep them off the public
+            // listing. Cards with no status at all predate this field, so they're
+            // treated as published (nothing existing gets hidden by accident).
+            const publishedOnly = Array.isArray(data) ? data.filter(function(c){ return c.status !== 'draft'; }) : data;
+            cardsData = sortByDateDesc(publishedOnly);
+            renderCards(cardsData);
+            setupUI();
+            applyFilter(INITIAL_CATEGORY);
+          })
+          .catch(function(err){
+            carousel.innerHTML = '<div class="error-msg">Could not load resources right now. Please try again later.</div>';
+            console.error('Failed to load cards.json:', err);
+          });
+      }
 
       function setupUI() {
         if (MODE === 'grid') {
