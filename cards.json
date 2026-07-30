@@ -161,5 +161,18 @@
     "author": "NO",
     "date": "2026-07-30",
     "status": "published"
+  },
+  {
+    "id": "test-delete-1785376551528",
+    "tool": "notebooklm",
+    "title": "Test delete",
+    "description": "test",
+    "image": "",
+    "link": "https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=article&id=test-delete-1785376551528",
+    "content": "test",
+    "badgeLabel": "NotebookLM",
+    "author": "",
+    "date": "2026-07-30",
+    "status": "published"
   }
 ]
