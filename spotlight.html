@@ -270,11 +270,11 @@
     // isn't signed into their aguafria.org account) so the filter bar still
     // works with a reasonable default instead of breaking entirely.
     const FALLBACK_CATEGORIES = [
-      { category: 'chatgpt', label: 'ChatGPT' },
-      { category: 'canva', label: 'Canva' },
-      { category: 'word', label: 'Word' },
-      { category: 'notebooklm', label: 'NotebookLM' },
-      { category: 'forms', label: 'Forms' }
+      { category: 'chatgpt', label: 'ChatGPT', color: '#14b8a6' },
+      { category: 'canva', label: 'Canva', color: '#7c3aed' },
+      { category: 'word', label: 'Word', color: '#2563eb' },
+      { category: 'notebooklm', label: 'NotebookLM', color: '#000000' },
+      { category: 'forms', label: 'Forms', color: '#16a34a' }
     ];
 
     /* ========================================================= */
@@ -296,6 +296,88 @@
         return String(str || '').replace(/[&<>"']/g, function(c){
           return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
         });
+      }
+
+      // --- Procedural gradient placeholder (used whenever a card has no image) ---
+      // Seeded off the card's own title/id so a given card always gets the same
+      // look instead of changing on every reload, and tinted from the category's
+      // brand color so it stays visually consistent with the rest of the AI Hub —
+      // in the same spirit as the soft abstract art ChatGPT uses in its marketing.
+      let categoryColors = {}; // populated from the categories fetch, keyed by category
+
+      function hashSeed(str) {
+        let hash = 0;
+        str = String(str || 'resource');
+        for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
+        }
+        return Math.abs(hash);
+      }
+
+      function hexToHsl(hex) {
+        hex = (hex || '#4A90D9').replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(function(c){ return c + c; }).join('');
+        const r = parseInt(hex.substr(0, 2), 16) / 255;
+        const g = parseInt(hex.substr(2, 2), 16) / 255;
+        const b = parseInt(hex.substr(4, 2), 16) / 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+          else if (max === g) h = (b - r) / d + 2;
+          else h = (r - g) / d + 4;
+          h *= 60;
+        }
+        return { h: h, s: s * 100, l: l * 100 };
+      }
+
+      function hslToHex(h, s, l) {
+        s /= 100; l /= 100;
+        const k = function(n) { return (n + h / 30) % 12; };
+        const a = s * Math.min(l, 1 - l);
+        const f = function(n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+        const toHex = function(x) { return Math.round(255 * x).toString(16).padStart(2, '0'); };
+        return '#' + toHex(f(0)) + toHex(f(8)) + toHex(f(4));
+      }
+
+      function generatePlaceholderImage(seedStr, baseHex) {
+        const seed = hashSeed(seedStr);
+        const base = hexToHsl(baseHex || '#4A90D9');
+        const angle = seed % 360;
+        const h1 = (base.h + 25 + (seed % 15)) % 360;
+        const h2 = (base.h - 40 - ((seed >> 4) % 20) + 360) % 360;
+        const s = Math.min(80, Math.max(45, base.s));
+        const l1 = Math.min(70, Math.max(35, base.l));
+        const l2 = Math.min(60, Math.max(22, base.l - 12));
+        const c1 = hslToHex(h1, s, l1);
+        const c2 = hslToHex(h2, s, l2);
+        const c1Light = hslToHex(h1, s, Math.min(88, l1 + 15));
+        const c2Light = hslToHex(h2, s, Math.min(85, l2 + 20));
+        const cx1 = 15 + (seed % 40);
+        const cy1 = 10 + ((seed >> 3) % 35);
+        const cx2 = 55 + ((seed >> 6) % 35);
+        const cy2 = 50 + ((seed >> 2) % 35);
+
+        const svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225">' +
+            '<defs>' +
+              '<linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(' + angle + ' 0.5 0.5)">' +
+                '<stop offset="0%" stop-color="' + c1 + '"/>' +
+                '<stop offset="100%" stop-color="' + c2 + '"/>' +
+              '</linearGradient>' +
+              '<filter id="b"><feGaussianBlur stdDeviation="28"/></filter>' +
+            '</defs>' +
+            '<rect width="400" height="225" fill="url(#g)"/>' +
+            '<circle cx="' + cx1 + '%" cy="' + cy1 + '%" r="90" fill="' + c1Light + '" opacity="0.35" filter="url(#b)"/>' +
+            '<circle cx="' + cx2 + '%" cy="' + cy2 + '%" r="110" fill="' + c2Light + '" opacity="0.3" filter="url(#b)"/>' +
+          '</svg>';
+
+        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
       }
 
       // Sorts newest-first. Cards with a missing or unparseable date sink to
@@ -326,9 +408,11 @@
           card.className = 'card';
           card.setAttribute('data-tool', tool);
 
+          const imageSrc = item.image || generatePlaceholderImage(item.title || item.id, categoryColors[tool]);
+
           card.innerHTML =
             '<div class="card-media">' +
-              '<img src="' + escapeHtml(item.image) + '" alt="">' +
+              '<img src="' + escapeHtml(imageSrc) + '" alt="">' +
               '<span class="badge" data-tool="' + escapeHtml(tool) + '">' + escapeHtml(item.badgeLabel || item.tool) + '</span>' +
             '</div>' +
             '<div class="card-body">' +
@@ -343,8 +427,10 @@
 
       function buildFilterButtons(categories) {
         const buttons = ['<button class="filter-btn active" data-filter="all">All</button>'];
+        categoryColors = {};
         categories.forEach(function(cat){
           buttons.push('<button class="filter-btn" data-filter="' + escapeHtml(cat.category) + '">' + escapeHtml(cat.label) + '</button>');
+          categoryColors[cat.category] = cat.color;
         });
         filterNav.innerHTML = buttons.join('');
         filterBtns = document.querySelectorAll('.filter-btn'); // re-query — these buttons are freshly created
