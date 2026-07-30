@@ -174,5 +174,18 @@
     "author": "",
     "date": "2026-07-30",
     "status": "published"
+  },
+  {
+    "id": "this-is-my-first-draft-1785379881848",
+    "tool": "claude",
+    "title": "This is my first draft",
+    "description": "This is a test",
+    "image": "",
+    "link": "https://www.google.com",
+    "content": "",
+    "badgeLabel": "Claude",
+    "author": "",
+    "date": "2026-07-30",
+    "status": "draft"
   }
 ]
