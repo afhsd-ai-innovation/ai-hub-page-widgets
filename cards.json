@@ -148,5 +148,18 @@
     "author": "Michael Riley",
     "date": "2026-07-30",
     "status": "published"
+  },
+  {
+    "id": "this-is-a-test-delete-1785376525900",
+    "tool": "word",
+    "title": "This is a test delete",
+    "description": "this is a test delete",
+    "image": "",
+    "link": "https://www.google.com",
+    "content": "",
+    "badgeLabel": "Word",
+    "author": "NO",
+    "date": "2026-07-30",
+    "status": "published"
   }
 ]
