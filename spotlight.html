@@ -337,7 +337,11 @@
           return res.json();
         })
         .then(function(data){
-          cardsData = sortByDateDesc(data);
+          // Drafts are saved but not yet published — keep them off the public
+          // listing. Cards with no status at all predate this field, so they're
+          // treated as published (nothing existing gets hidden by accident).
+          const publishedOnly = Array.isArray(data) ? data.filter(function(c){ return c.status !== 'draft'; }) : data;
+          cardsData = sortByDateDesc(publishedOnly);
           renderCards(cardsData);
           setupUI();
           applyFilter(INITIAL_CATEGORY);
