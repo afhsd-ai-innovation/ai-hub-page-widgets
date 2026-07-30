@@ -200,5 +200,18 @@
     "author": "",
     "date": "2026-07-30",
     "status": "draft"
+  },
+  {
+    "id": "this-is-a-test-1785432682040",
+    "tool": "forms",
+    "title": "this is a test",
+    "description": "this is a test",
+    "image": "https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/images/1785432662338-go-pilot.png",
+    "link": "https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=article&id=this-is-a-test-1785432682040",
+    "content": "this is a test&nbsp;",
+    "badgeLabel": "Forms",
+    "author": "",
+    "date": "2026-07-30",
+    "status": "published"
   }
 ]
