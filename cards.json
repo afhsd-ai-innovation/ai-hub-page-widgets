@@ -259,5 +259,22 @@
     "date": "2026-07-31",
     "status": "published",
     "kind": "article"
+  },
+  {
+    "id": "workflow-research-topic-create-artifact-email-team-book-appointment-1787278289896",
+    "kind": "article",
+    "tool": "chatgpt",
+    "title": "Workflow: Research Topic, Create Artifact, Email Team, Book APpointment",
+    "description": "Workflow: Research Topic, Create Artifact, Email Team, Book APpointment",
+    "image": "",
+    "link": "https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=article&id=workflow-research-topic-create-artifact-email-team-book-appointment-1787278289896",
+    "content": "<div><ol start=\"1\"><li><span>Click the <b>Add “+” button</b> to the left of the message&nbsp;</span></li></ol><p><img src=\"https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/images/1787278162857-screenshot-2026-08-20-at-2-37-27-pm.png\"></p><ol start=\"2\"><li><span>Select or type in Google Calendar, Google Drive, Gmail, and Canva. If you see a reasoning option, select “medium” or “high.” <b>(Make sure to include all (4) connects for this exercise)&nbsp;</b></span></li></ol><div><img src=\"https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/images/1787278139916-tool-selector-2.gif\"><br></div></div><div><ol start=\"3\"><li><span>Next, use the&nbsp;</span><span><b>Add “+” button </b>to<b>&nbsp;</b></span><span>upload the district logo attached to this email.&nbsp;</span></li></ol><ol start=\"4\"><li><span>Next, <b>copy and paste</b> the following prompt:</span></li></ol><p><span>“Look\n in my Google Drive and Gmail for resources related to WellStyles. \nCreate a 5–7 slide presentation in Canva with Agua Fria colors and \nstyle, opening with a discussion question, followed by some \ninformational slides and a closing.&nbsp;</span>Explain the program, how \nemployees can earn points, the potential $500 benefit-cost offset, and \nhow to get started. Include an opening question, a practical “choose \nyour path to 10,000 points” activity, and a clear closing action.&nbsp;<span>Use the attached district logo to guide the presentation’s colors and visual style. Email the presentation to </span><a href=\"mailto:mriley@aguafria.org\" target=\"_blank\"><span>mriley@aguafria.org</span></a><span> and create a calendar invitation for August 25 at 3pm for a one-hour meeting with him to go over the slides.”</span></p><p><span><br></span></p><img src=\"https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/images/1787278192029-screenshot-2026-08-20-at-2-44-53-pm.png\"><ol start=\"5\"><li><span>You will get several windows asking for permission or confirmation. Review and approve them as they appear.</span></li></ol><img src=\"https://raw.githubusercontent.com/afhsd-ai-innovation/ai-hub-page-widgets/main/images/1787278208761-screenshot-2026-08-20-at-2-42-12-pm.png\"><p><b><span style=\"background-color:rgb(255,255,0)\">Note:</span></b> It will take several minutes for the agent to complete the tasks.</p><p><span>From a single prompt, ChatGPT will coordinate a series of tasks across your connected tools:</span></p><ol start=\"1\"><li><span>Search Google Drive and Gmail for relevant WellStyles content.</span></li><li><span>Use Canva to create the presentation.</span></li><li><span>Use Gmail to email me the completed presentation.</span></li><li><span>Use Google Calendar to create and send the meeting invitation.</span></li></ol><p><span><span style=\"color:rgb(255,0,0)\"><b><i>Congratulations, you’ve completed your first agentic workflow!&nbsp;</i></b></span></span></p></div>",
+    "badgeLabel": "ChatGPT",
+    "author": "Harry Potter",
+    "role": "",
+    "roleLabel": "",
+    "impact": "",
+    "date": "2026-08-21",
+    "status": "published"
   }
 ]
