@@ -187,6 +187,16 @@
       border-radius: 99px;
       z-index: 2;
     }
+    /* The kind badge — what SORT of thing this is (use case, video, prompt).
+       Goes to the opposite corner from the category badge so the two never
+       collide. Hidden entirely if the kind list can't be fetched. */
+    .kind-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: #6b7280; color: #fff;
+      padding: 4px 10px; font-size: 0.75rem; font-weight: 700;
+      border-radius: 99px;
+      z-index: 2;
+    }
     .badge[data-tool="chatgpt"] { background: #14b8a6; }
     .badge[data-tool="canva"]   { background: #7c3aed; }
     .badge[data-tool="word"]    { background: #2563eb; }
@@ -254,6 +264,50 @@
     // STARTING FILTER: 'all', 'chatgpt', 'canva', 'word', 'forms', etc.
     const INITIAL_CATEGORY = 'all';
 
+    // WHICH KINDS TO SHOW.
+    //
+    //   'all'                 every kind (the main hub view)
+    //   ['usecase']           a use-cases-only page
+    //   ['video','prompt']    any combination
+    //
+    // A "kind" is what sort of thing a resource is, as opposed to what it's
+    // about — the current list lives in Config.js in the CMS and is served at
+    // <deployment URL>?page=kinds. Records saved before kinds existed have no
+    // kind field at all and count as 'article', so nothing older ever
+    // disappears by accident.
+    //
+    // This is only the DEFAULT. Any page can override it from the embed URL,
+    // so one copy of this file serves every page:
+    //
+    //   <iframe src=".../spotlight.html?kinds=usecase">
+    //   <iframe src=".../spotlight.html?kinds=video,prompt">
+    //   <iframe src=".../spotlight.html">          uses the default below
+    //
+    // Prefer the query string over editing this line — a second copy of the
+    // file is a second thing to keep up to date.
+    const KINDS_SHOWN = 'all';
+
+    // SHOW THE KIND BADGE ON EACH CARD? Useful when a page mixes kinds;
+    // pointless on a page already filtered to one kind.
+    const SHOW_KIND_BADGE = true;
+
+    // Used only if the kinds endpoint can't be reached — same situation as
+    // FALLBACK_CATEGORIES below, i.e. the viewer isn't signed into their
+    // aguafria.org account. Without this the badges would silently vanish for
+    // exactly the people most likely to be reading from outside the domain.
+    //
+    // NOTE: filtering by KINDS_SHOWN does NOT depend on this. That reads the
+    // kind straight out of cards.json, so a use-cases-only page stays correct
+    // even when this list is what's in use.
+    const FALLBACK_KINDS = [
+      { kind: 'usecase', label: 'Use Case', color: '#7c3aed' },
+      { kind: 'article', label: 'Article',  color: '#2563eb' },
+      { kind: 'video',   label: 'Video',    color: '#dc2626' },
+      { kind: 'prompt',  label: 'Prompt',   color: '#059669' },
+      { kind: 'skill',   label: 'Skill',    color: '#ea580c' },
+      { kind: 'chatbot', label: 'Chatbot',  color: '#0891b2' }
+    ];
+
     // The View All Link
     const VIEW_ALL_URL = 'https://sites.google.com/aguafria.org/ai-hub/spotlight';
 
@@ -265,6 +319,10 @@
     // used everywhere else in the AI Hub, so this file never drifts out of
     // sync when a category is added/renamed/removed.
     const CATEGORIES_URL = 'https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=categories';
+
+    // The kind list, from the same CMS config, so the badge labels and colours
+    // here never drift out of sync with what the CMS is writing.
+    const KINDS_URL = 'https://script.google.com/a/macros/aguafria.org/s/AKfycbx13FWuxaxgD93A_wbfHU_j5EGBk_suTbQ-xcrYRx29mlIiNtFX0UDfhJsyBag9OdDR/exec?page=kinds';
 
     // Used only if the categories endpoint can't be reached (e.g. the viewer
     // isn't signed into their aguafria.org account) so the filter bar still
@@ -278,6 +336,21 @@
     ];
 
     /* ========================================================= */
+
+    // Lets an embed override KINDS_SHOWN with ?kinds=usecase or
+    // ?kinds=video,prompt. Falls back to the constant above when absent.
+    const KINDS_ACTIVE = (function(){
+      try {
+        const raw = new URLSearchParams(window.location.search).get('kinds');
+        if (!raw) return KINDS_SHOWN;
+        if (raw.toLowerCase() === 'all') return 'all';
+        const list = raw.split(',').map(function(k){ return k.trim().toLowerCase(); })
+                        .filter(function(k){ return k; });
+        return list.length ? list : KINDS_SHOWN;
+      } catch (e) {
+        return KINDS_SHOWN; // older browser, or no query string available
+      }
+    })();
 
     (function(){
       const carousel = document.getElementById('carousel');
@@ -304,6 +377,7 @@
       // brand color so it stays visually consistent with the rest of the AI Hub —
       // in the same spirit as the soft abstract art ChatGPT uses in its marketing.
       let categoryColors = {}; // populated from the categories fetch, keyed by category
+      let kindsById = {};      // populated from the kinds fetch, keyed by kind id
 
       function hashSeed(str) {
         let hash = 0;
@@ -393,6 +467,21 @@
         });
       }
 
+      // Narrows the pool to the kinds this particular embed should show. This
+      // is the whole mechanism behind "on this page, only display use cases" —
+      // one pool of resources, one filter, no separate data file.
+      function filterByKind(list) {
+        if (!Array.isArray(list)) return list;
+        if (KINDS_ACTIVE === 'all' || !Array.isArray(KINDS_ACTIVE)) return list;
+
+        const wanted = KINDS_ACTIVE.map(function(k){ return String(k).toLowerCase(); });
+        return list.filter(function(c){
+          // Missing kind counts as 'article' — that's what every record
+          // written before kinds existed effectively was.
+          return wanted.indexOf(String(c.kind || 'article').toLowerCase()) !== -1;
+        });
+      }
+
       function renderCards(data) {
         carousel.innerHTML = '';
 
@@ -410,10 +499,18 @@
 
           const imageSrc = item.image || generatePlaceholderImage(item.title || item.id, categoryColors[tool]);
 
+          // Only shown when the kind list actually loaded, so a failed fetch
+          // degrades to the card looking exactly as it always has.
+          const kindConfig = kindsById[String(item.kind || 'article').toLowerCase()];
+          const kindBadge = (SHOW_KIND_BADGE && kindConfig)
+            ? '<span class="kind-badge" style="background:' + escapeHtml(kindConfig.color || '#6b7280') + '">' + escapeHtml(kindConfig.label) + '</span>'
+            : '';
+
           card.innerHTML =
             '<div class="card-media">' +
               '<img src="' + escapeHtml(imageSrc) + '" alt="">' +
               '<span class="badge" data-tool="' + escapeHtml(tool) + '">' + escapeHtml(item.badgeLabel || item.tool) + '</span>' +
+              kindBadge +
             '</div>' +
             '<div class="card-body">' +
               '<h3 class="card-title">' + escapeHtml(item.title) + '</h3>' +
@@ -449,6 +546,20 @@
           console.error('Failed to load categories, using fallback list:', err);
           buildFilterButtons(FALLBACK_CATEGORIES);
         })
+        .then(function(){
+          // Non-blocking: if the kind list can't be reached the cards still
+          // render, just without kind badges.
+          return fetch(KINDS_URL, { cache: 'no-store' })
+            .then(function(res){ return res.ok ? res.json() : null; })
+            .then(function(kinds){
+              const list = (Array.isArray(kinds) && kinds.length) ? kinds : FALLBACK_KINDS;
+              list.forEach(function(k){ kindsById[k.kind] = k; });
+            })
+            .catch(function(err){
+              console.error('Failed to load kinds, using fallback list:', err);
+              FALLBACK_KINDS.forEach(function(k){ kindsById[k.kind] = k; });
+            });
+        })
         .then(loadCards);
 
       function loadCards() {
@@ -462,7 +573,7 @@
             // listing. Cards with no status at all predate this field, so they're
             // treated as published (nothing existing gets hidden by accident).
             const publishedOnly = Array.isArray(data) ? data.filter(function(c){ return c.status !== 'draft'; }) : data;
-            cardsData = sortByDateDesc(publishedOnly);
+            cardsData = sortByDateDesc(filterByKind(publishedOnly));
             renderCards(cardsData);
             setupUI();
             applyFilter(INITIAL_CATEGORY);
